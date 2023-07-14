@@ -4,11 +4,10 @@ import './App.css';
 function App() {
   const [counter, setCounter] = useState(0);
 const increment =() =>{
-  // setCounter(counter + 1);
-  // setCounter(counter + 1);
-// setCounter((prevCounter) => prevCounter + 1);
-// setCounter((prevCounter) => prevCounter + 1);
-// setCounter((prevCounter) => prevCounter + 1);
+  // // // Short notation prevValue
+  setCounter((prev) => prev + 1);
+  setCounter((prev) => prev + 1);
+  setCounter((prev) => prev + 1);
 } 
 
 const decrement = () => {
