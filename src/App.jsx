@@ -1,62 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
+  const [type, setType] = useState('users');
+  const [data, setData]= useState([]);
 
-  const [counter, setCounter] = useState(() => Math.trunc(Math.random() * 20));
-  const increment = () => {
-    // // // Short notation prevValue
-    setCounter((prev) => prev + 1);
-    setCounter((prev) => prev + 1);
-    setCounter((prev) => prev + 1);
-  }
+//useEffect( () => console.log('render'));
 
-  const decrement = () => {
-    setCounter(counter - 1);
-  }
-  const [state, setState] = useState({
-    title: 'Counter',
-    data: Date.now(),
-  });
-
-  const changeTitle = () => {
-    setState((prev) => {
-      return { ...prev, title: 'New Title' }
-    });
-  }
-
-  const [text, setText] = useState('');
-  const [str, setStr] = useState('');
-  
- const onChangeInputHandler =(e) => {
-  setStr(e.currentTarget.value);
-  
- };
- const onClickButtonHandler =() => {
-  setText(str.trim());
-  setStr('');
- }
-
-
+useEffect( () => {
+  fetch(`https://jsonplaceholder.typicode.com/${type}`)
+  .then(response => response.json())
+      .then(json => setData(json))
+}, [type])
 
 
 
   return (
-     <div>
-      <h1>Counter={counter} </h1>
-      <button className='btn btn-success' onClick={increment}>Add</button>
-     <button className='btn btn-danger' onClick={decrement}>Remove</button>
-      <button className='btn btn-default' onClick={changeTitle}>Change title</button>
-      <pre>{JSON.stringify(state, null, 2)}</pre> 
-
-<div>
-  <input type="text" value={str} onChange={onChangeInputHandler}/>
-  <button onClick={onClickButtonHandler}>&#9998;</button>
-  <p>Word - {text} </p>
-</div>
-
+    <div>
+      <h1>Resource - {type}</h1>
+      <button className='btn btn-success' onClick={() => {setType('users')} }>users </button>
+      <button className='btn btn-success' onClick={() => {setType('todos')}} >todo </button>
+      <button className='btn btn-success' onClick={() => {setType('posts')}  }>posts </button>
+      <pre>
+        {JSON.stringify(data, null, 2)}
+      </pre>
     </div>
-  );
-}
+  )
 
+}
 export default App
