@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from 'react';
+// useRef - возвращает изменяемый ref-объект, свойство .current которого инициализируется переданным аргументом (initialValue). Возвращённый объект будет сохраняться в течение всего времени жизни компонента.
+
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 function App() {
-  const [type, setType] = useState('users');
-  const [data, setData]= useState([]);
+ // const [renderCount, setRenderCount] = useState(1);
+  const [value, setValue] =useState('initial');
+  const renderCount = useRef(1);
+  const inputRef = useRef(null);
+  const focus = () => inputRef.current.focus();
+  const prevValue = useRef('');
+  useEffect(() => {
+    renderCount.current ++;  
+    console.log(inputRef.current.value);  
+  });
+  useEffect( () => {
+    prevValue.current = value;
+  }, [value])
 
-//useEffect( () => console.log('render'));
-
-useEffect( () => {
-  fetch(`https://jsonplaceholder.typicode.com/${type}`)
-  .then(response => response.json())
-      .then(json => setData(json))
-}, [type])
-
-
-
-  return (
+ return(
     <div>
-      <h1>Resource - {type}</h1>
-      <button className='btn btn-success' onClick={() => {setType('users')} }>users </button>
-      <button className='btn btn-success' onClick={() => {setType('todos')}} >todo </button>
-      <button className='btn btn-success' onClick={() => {setType('posts')}  }>posts </button>
-      <pre>
-        {JSON.stringify(data, null, 2)}
-      </pre>
+<h1>RenderCount: {renderCount.current}</h1>
+<h2>Previous value: {prevValue.current}</h2>
+<input ref={inputRef} type="text" onChange={ e =>setValue(e.target.value)  } value={value}/>
+<button className='btn btn-success' onClick={focus}>focus</button>
+
     </div>
   )
-
 }
 export default App
